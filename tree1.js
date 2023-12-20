@@ -90,7 +90,7 @@ class Tree {
 
     // Depth-First Search:Pre-order
 
-    preOredrSearch(node,targeValue){
+    preOrderSearch(node,targeValue){
         if(node===null){
             return null
         }
@@ -100,7 +100,7 @@ class Tree {
         }
 
         for(const child of node.children){
-            const result= this.preOredrSearch(child,targeValue)
+            const result= this.preOrderSearch(child,targeValue)
 
             if(result!==null){
                 return result  // Propagate the results if found in the subtree
@@ -127,6 +127,48 @@ class Tree {
     }
 
     return null; // Target not found in this subtree
+  }
+
+  deleteNode(node,targetValue){
+    if(node===null) return null  // target not found
+
+    // search for the target node in the tree
+
+    for(let i=0; i<node.children.length;i++){
+      if(node.children[i].data===targetValue){
+        
+        // case 1 : Deleting a leaf node or a node with one child
+        if(node.children[i].children.length===0){
+          node.children.splice(i,1)  // remove the node
+         }else if(node.children[i].children.length===1){
+          //case 2
+          node.children[i] = node.children[i].children[0];  // Replace the currentnode with its children 
+         }else{
+           //case 3:Delete a node with 2 children
+
+           const smallestNode = this.findSmallestNode(node.children[i].children[1]);
+           node.children[i].data=smallestNode.data  // Replace with the smallest node value
+           this.deleteNode(node.children[i].children[1],smallestNode.data)   // Recursively delete the smallest node
+          
+          }
+
+          return node // Node deleted
+      }
+      //Recursively search for target node in the child nodes
+
+      this.deleteNode(node.children[i],targetValue)
+    }
+return null // target not found
+
+  }
+
+  // Helper function to find the node with the smallest value in a subtree
+
+  findSmallestNode(node){
+    while(node.children.length>0){
+      node=node.children[0];
+    }
+    return node
   }
 
 }
@@ -164,7 +206,7 @@ nodeB.addChild(nodeE); // Adding E as a child to B
 
 // console.log('Pre-order Traversal:');
 
-// // myTree.preOrderTraversal(myTree.root, node=>console.log(node.data));
+// myTree.preOrderTraversal(myTree.root, node=>console.log(node.data));
 // myTree.preOrderTraversal(myTree.root, node => console.log(node.data));
 
 // console.log("///////////")
@@ -183,7 +225,7 @@ nodeB.addChild(nodeE); // Adding E as a child to B
 
 
 console.log('Pre-order Search for node with value "D":');
-const resultNodePreOrder = myTree.preOredrSearch(myTree.root, 'F');
+const resultNodePreOrder = myTree.preOrderSearch(myTree.root, 'F');
 console.log(resultNodePreOrder);
 
 console.log('\nPost-order Search for node with value "D":');
