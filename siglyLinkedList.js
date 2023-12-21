@@ -55,6 +55,7 @@ class SinglyLinkedList {
         }
     }
 
+
     display() {
         let current = this.head;
         while (current !== null) {
@@ -62,6 +63,37 @@ class SinglyLinkedList {
             current = current.next;
         }
         console.log('null');
+    }
+
+
+    insertAt(position, data) {
+        if (position < 0) {
+            console.log("Invalid position");
+            return;
+        }
+
+        const newNode = new Node(data);
+
+        if (position === 0) {
+            newNode.next = this.head;
+            this.head = newNode;
+            return;
+        }
+
+        let current = this.head;
+        let count = 0;
+        while (count < position - 1 && current !== null) {
+            current = current.next;
+            count++;
+        }
+
+        if (current === null) {
+            console.log("Invalid position");
+            return;
+        }
+
+        newNode.next = current.next;
+        current.next = newNode;
     }
 }
 
