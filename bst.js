@@ -58,6 +58,25 @@ class BinarySearchTree{
     }
     
 
+    
+  search(value) {
+    return this.searchNode(this.root, value);
+  }
+
+  searchNode(node, value) {
+    if (!node) {
+      return null; // Value not found
+    }
+
+    if (value < node.value) {
+      return this.searchNode(node.left, value);
+    } else if (value > node.value) {
+      return this.searchNode(node.right, value);
+    } else {
+      return node; // Value found
+    }
+  }
+
    
 }
         
@@ -83,4 +102,4 @@ bst.insert(10)
 
 
 // console.log(bst.root.right)
-console.log(bst.find(12))
+console.log(bst.search(12))
